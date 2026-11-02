@@ -47,6 +47,19 @@ char Map::getSymbol(const Vector2 &position) const
     return CELL_INFOS[cells[toIndex(position)]].symbol;
 }
 
+bool Map::symbolToCellType(char symbol, CellType &type)
+{
+    for (int i = 0; i < CellTypeCount - 1; ++i)
+    {
+        if (CELL_INFOS[i].symbol == symbol)
+        {
+            type = static_cast<CellType>(i);
+            return true;
+        }
+    }
+    return false;
+}
+
 void Map::setCellType(const Vector2 &position, CellType type)
 {
     if (!isInside(position))
