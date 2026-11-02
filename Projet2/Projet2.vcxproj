@@ -111,12 +111,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master;C:\Users\sbougrini\Desktop\Projets\Librairies\PDCurses-master</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master\wincon</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\sbougrini\Desktop\Projets\Librairies\PDCurses-master\wincon;C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
@@ -132,12 +132,12 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master;C:\Users\sbougrini\Desktop\Projets\Librairies\PDCurses-master</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master\wincon</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\sbougrini\Desktop\Projets\Librairies\PDCurses-master\wincon;C:\Users\SAMI\Documents\Cours C++\ncurses\PDCurses-master</AdditionalLibraryDirectories>
       <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
