@@ -23,6 +23,7 @@ struct CellInfo
 class Map
 {
 public:
+    static bool symbolToCellType(char symbol, CellType &type);
     bool isInside(const Vector2 &position) const;
     bool isWalkable(const Vector2 &position) const;
     bool isWater(const Vector2 &position) const;
