@@ -161,11 +161,14 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HeadlessZombie.h" />
+    <ClInclude Include="Mage.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="LevelParser.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Swimmer.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Warrior.h" />
+    <ClInclude Include="WarriorMage.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieSwimmer.h" />
   </ItemGroup>
