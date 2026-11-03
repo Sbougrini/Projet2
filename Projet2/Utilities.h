@@ -14,3 +14,15 @@ enum class Direction
     RIGHT,
     NONE
 };
+
+class Utilities
+{
+public:
+    Utilities() = delete;
+    static Vector2 add(const Vector2& position, const Vector2& delta);
+    static Vector2 offset(Direction direction);
+    static Direction inputToDirection(int key);
+
+private:
+    static const Vector2 DIRECTION_OFFSETS[4];
+};
