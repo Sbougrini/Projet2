@@ -50,7 +50,7 @@ char Map::getSymbol(const Vector2 &position) const
 
 bool Map::symbolToCellType(char symbol, CellType &type)
 {
-    for (int i = 0; i < CellTypeCount - 1; ++i)
+    for (int i = 0; i < CellTypeCount; ++i)
     {
         if (CELL_INFOS[i].symbol == symbol)
         {
