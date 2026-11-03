@@ -1,3 +1,4 @@
+// Andy Donero
 #pragma once
 
 #include "Entity.h"
@@ -5,10 +6,10 @@
 class Player : public Entity
 {
 public:
-    Vector2 getPosition() const override;
-    bool isAlive() const override;
+    Player(const Vector2 &startPosition, int startingHealth);
 
-protected:
-    Vector2 position;
-    int health = 0;
+    int readPlayerInputs() const;
+    Vector2 getDirection(int key) const;
+
+    bool isPlayer() const override;
 };
