@@ -19,4 +19,5 @@ public:
 
 protected:
     static Vector2 findPlayerPosition(const std::vector<Entity *> &entities);
+    static constexpr int DAMAGE = 1;
 };

@@ -1,3 +1,4 @@
+// Sami Bougrini
 #include "Entity.h"
 #include "Utilities.h"
 #include "Map.h"
