@@ -1,5 +1,6 @@
 // Sami Bougrini
 #include "Zombie.h"
+
 #include <cstdlib>
 
 char Zombie::getSymbol() const
@@ -7,7 +8,7 @@ char Zombie::getSymbol() const
     return SYMBOL;
 }
 
-Vector2 Zombie::getDirection(const Map &map, const Vector2 &playerPosition) const
+Vector2 Zombie::getDirection(const Map &, const Vector2 &playerPosition) const
 {
     int dx = playerPosition.x - position.x;
     int dy = playerPosition.y - position.y;
@@ -20,5 +21,5 @@ Vector2 Zombie::getDirection(const Map &map, const Vector2 &playerPosition) cons
     {
         return Utilities::offset(dx > 0 ? Direction::RIGHT : Direction::LEFT);
     }
-    return Utilities::offset(dx > 0 ? Direction::DOWN : Direction::UP);
+    return Utilities::offset(dy > 0 ? Direction::DOWN : Direction::UP);
 }
