@@ -1,7 +1,5 @@
 // Sami Bougrini
 #include "Enemy.h"
-#include "Entity.h"
-#include "Utilities.h"
 
 void Enemy::onUpdate(const Map &map, const std::vector<Entity *> &entities)
 {

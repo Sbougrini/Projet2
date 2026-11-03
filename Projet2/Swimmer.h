@@ -1,5 +1,6 @@
 // Sami Bougrini
 #pragma once
+
 class Swimmer
 {
 public:
