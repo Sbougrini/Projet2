@@ -1,6 +1,7 @@
+// Sami Bougrini
 #include "Entity.h"
-#include "Utilities.h"
 #include "Map.h"
+#include "Utilities.h"
 
 Vector2 Entity::getPosition() const
 {
@@ -25,7 +26,7 @@ void Entity::applyDamage(int damage)
         health = 0;
     }
 }
-    
+
 bool Entity::canEnter(const Map &map, const Vector2 &target) const
 {
     return map.isWalkable(target) || (canSwim && map.isWater(target));
