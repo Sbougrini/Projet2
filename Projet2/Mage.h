@@ -3,15 +3,18 @@
 
 #include "Player.h"
 
-class Enemy;
-class Game;
+#include <vector>
+
+class Map;
 
 class Mage : public virtual Player
 {
 public:
     Mage(const Vector2 &startPosition);
 
+    void onUpdate(const Map &map, std::vector<Entity *> &entities) override;
+    void onCollision(Entity *other) override;
     char getSymbol() const override;
-    void onEnemyCollision(Enemy &enemy) override;
-    bool useSpecial(Game &game) override;
+
+    void castSpell(std::vector<Entity *> &entities);
 };
