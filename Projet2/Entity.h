@@ -1,4 +1,4 @@
-// Sami Bougrini
+// Sami Bougrini | Andy Donero
 #pragma once
 #include "Utilities.h"
 #include <vector>
