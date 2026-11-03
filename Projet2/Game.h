@@ -1,9 +1,9 @@
 // Sami Bougrini
 #pragma once
-#include "Map.h"
-#include "Utilities.h"
 #include <string>
 #include <vector>
+#include "Map.h"
+#include "Utilities.h"
 
 class Player;
 class Enemy;
