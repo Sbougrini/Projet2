@@ -5,6 +5,6 @@ class HeadlessZombie : public Enemy
 {
 public:
     char getSymbol() const override;
-    Direction chooseDirection(const Map &map,
-                              const Vector2 &playerPosition) const override;
+    Vector2 getDirection(const Map &map,
+                         const Vector2 &playerPosition) const override;
 };
