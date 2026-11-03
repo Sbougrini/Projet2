@@ -149,11 +149,15 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HeadlessZombie.cpp" />
+    <ClCompile Include="Mage.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="LevelParser.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projet2.cpp" />
     <ClCompile Include="Swimmer.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Warrior.cpp" />
+    <ClCompile Include="WarriorMage.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieSwimmer.cpp" />
   </ItemGroup>
