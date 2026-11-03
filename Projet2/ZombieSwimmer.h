@@ -6,7 +6,7 @@
 class ZombieSwimmer : public Zombie, public Swimmer
 {
 public:
+    ZombieSwimmer();
     char getSymbol() const override;
-    bool canEnter(const Map &map, const Vector2 &cellTarget) const override;
-    void update(const Map &map, const Vector2 &playerPosition) override;
+    void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
 };
