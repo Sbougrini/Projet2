@@ -1,4 +1,4 @@
-//Sami Bougrini
+// Sami Bougrini
 #include "Map.h"
 
 bool Map::isInside(const Vector2 &position) const

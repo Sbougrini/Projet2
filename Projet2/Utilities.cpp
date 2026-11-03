@@ -1,17 +1,12 @@
-//Sami Bougrini
+// Sami Bougrini
 #include "Utilities.h"
 
 const Vector2 Utilities::DIRECTION_OFFSETS[4] = {
-    {0, -1},
-    {0, 1},
-    {-1, 0},
-    {1, 0},
+    {0, -1}, // UP
+    {0, 1},  // DOWN
+    {-1, 0}, // LEFT
+    {1, 0}   // RIGHT
 };
-
-Vector2 Utilities::add(const Vector2 &position, const Vector2 &delta)
-{
-    return Vector2{position.x + delta.x, position.y + delta.y};
-}
 
 Vector2 Utilities::offset(Direction direction)
 {

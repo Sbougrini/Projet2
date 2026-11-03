@@ -5,6 +5,15 @@ struct Vector2
 {
     int x = 0;
     int y = 0;
+    Vector2 operator+(const Vector2 &other) const
+    {
+        return Vector2{x + other.x, y + other.y};
+    }
+
+    bool operator==(const Vector2 &other) const
+    {
+        return x == other.x && y == other.y;
+    }
 };
 
 enum class Direction
@@ -20,7 +29,6 @@ class Utilities
 {
 public:
     Utilities() = delete;
-    static Vector2 add(const Vector2& position, const Vector2& delta);
     static Vector2 offset(Direction direction);
     static Direction inputToDirection(int key);
 
