@@ -28,7 +28,7 @@ protected:
 
 private:
     bool canEnter(const Map &map, const Vector2 &cellTarget) const;
-    Entity* findEntityAt(const Vector2 &Target,
-                      const std::vector<Entity*> &entities) const;
+    Entity *findEntityAt(const Vector2 &Target,
+                         const std::vector<Entity *> &entities) const;
     bool handleContact(Entity *other);
 };
