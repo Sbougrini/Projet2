@@ -27,7 +27,7 @@ protected:
     bool canSwim = false;
 
 private:
-    bool canEnter(const Map &map, const Vector2 &targetarget) const;
+    bool canEnter(const Map &map, const Vector2 &target) const;
     Entity *findEntityAt(const Vector2 &target,
                          const std::vector<Entity *> &entities) const;
     bool handleContact(Entity *other);
