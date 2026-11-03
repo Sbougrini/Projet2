@@ -1,7 +1,7 @@
 // Sami Bougrini
 #pragma once
-#include <vector>
 #include "Utilities.h"
+#include <vector>
 
 class Map;
 
@@ -25,4 +25,10 @@ protected:
     Vector2 position;
     int health = 1;
     bool canSwim = false;
+
+private:
+    bool canEnter(const Map &map, const Vector2 &cellTarget) const;
+    Entity* findEntityAt(const Vector2 &Target,
+                      const std::vector<Entity*> &entities) const;
+    bool handleContact(Entity *other);
 };
