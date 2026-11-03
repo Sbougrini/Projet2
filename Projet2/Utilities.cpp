@@ -1,3 +1,4 @@
+//Sami Bougrini
 #include "Utilities.h"
 
 const Vector2 Utilities::DIRECTION_OFFSETS[4] = {
