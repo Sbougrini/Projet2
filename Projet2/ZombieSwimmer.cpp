@@ -13,6 +13,6 @@ void ZombieSwimmer::onUpdate(const Map &map, const std::vector<Entity *> &entiti
     updateOxygen(map.isWater(position));
     if (!hasOxygen())
     {
-        applyDamage(health);
+        kill();
     }
 }

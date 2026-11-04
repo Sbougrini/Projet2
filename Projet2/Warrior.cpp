@@ -1,7 +1,6 @@
 // Andy Donero
 #include "Warrior.h"
 #include "Map.h"
-#include <limits>
 
 Warrior::Warrior(const Vector2 &startPosition) : Player(startPosition, 3)
 {
@@ -29,6 +28,6 @@ void Warrior::onCollision(Entity *other)
 {
     if (other != nullptr)
     {
-        other->applyDamage(std::numeric_limits<int>::max());
+        other->kill();
     }
 }

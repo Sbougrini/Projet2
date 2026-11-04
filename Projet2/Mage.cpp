@@ -2,7 +2,6 @@
 #include "Mage.h"
 #include "Map.h"
 #include <cstdlib>
-#include <limits>
 
 Mage::Mage(const Vector2 &startPosition) : Player(startPosition, 1)
 {
@@ -54,7 +53,7 @@ void Mage::castSpell(const std::vector<Entity *> &entities)
 
         if (dx <= 1 && dy <= 1 && (dx != 0 || dy != 0))
         {
-            entity->applyDamage(std::numeric_limits<int>::max());
+            entity->kill();
         }
     }
 }

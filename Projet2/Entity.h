@@ -13,6 +13,7 @@ public:
     void setPosition(const Vector2 &newPosition);
     void applyDamage(int damage);
     bool isAlive() const;
+    void kill();
     bool move(const Vector2 &direction, const Map &map,
               const std::vector<Entity *> &entities);
 
@@ -41,4 +42,9 @@ inline bool Entity::isAlive() const
 inline Vector2 Entity::getPosition() const
 {
     return position;
+}
+
+inline void Entity::kill()
+{
+    health = 0;
 }
