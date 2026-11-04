@@ -9,12 +9,12 @@ Player::Player(const Vector2 &startPosition, int startingHealth)
     health = startingHealth;
 }
 
-int Player::readPlayerInputs() const
+char Player::readPlayerInputs() const
 {
-    return getch();
+    return static_cast<char>(getch());
 }
 
-Vector2 Player::getDirection(int key) const
+Vector2 Player::getDirection(char key) const
 {
     return Utilities::offset(Utilities::inputToDirection(key));
 }

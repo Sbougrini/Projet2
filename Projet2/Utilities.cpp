@@ -20,7 +20,7 @@ Vector2 Utilities::offset(Direction direction)
     return DIRECTION_OFFSETS[index];
 }
 
-Direction Utilities::inputToDirection(int key)
+Direction Utilities::inputToDirection(char key)
 {
     switch (key)
     {

@@ -30,7 +30,7 @@ class Utilities
 public:
     Utilities() = delete;
     static Vector2 offset(Direction direction);
-    static Direction inputToDirection(int key);
+    static Direction inputToDirection(char key);
 
 private:
     static constexpr int DIRECTION_COUNT = 4;

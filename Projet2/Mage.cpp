@@ -12,7 +12,7 @@ void Mage::onUpdate(const Map &map, const std::vector<Entity *> &entities)
 {
     while (isAlive())
     {
-        const int key = readPlayerInputs();
+        const char key = readPlayerInputs();
 
         if (key == ' ')
         {
