@@ -64,7 +64,6 @@ bool Entity::handleContact(Entity *other)
         return false;
     }
     onCollision(other);
-    onCollision(other);
     if (other->isAlive())
     {
         other->onCollision(this);
