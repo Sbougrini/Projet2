@@ -10,14 +10,7 @@ void Warrior::onUpdate(const Map &map, const std::vector<Entity *> &entities)
 {
     while (isAlive())
     {
-        const Vector2 direction = getDirection(readPlayerInputs());
-
-        if (direction == Vector2{})
-        {
-            continue;
-        }
-
-        if (move(direction, map, entities) || !isAlive())
+        if (tryMove(readPlayerInputs(), map, entities))
         {
             return;
         }

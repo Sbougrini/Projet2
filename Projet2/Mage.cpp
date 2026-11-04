@@ -12,21 +12,12 @@ void Mage::onUpdate(const Map &map, const std::vector<Entity *> &entities)
     while (isAlive())
     {
         const char key = readPlayerInputs();
-
         if (key == ' ')
         {
             castSpell(entities);
             return;
         }
-
-        const Vector2 direction = getDirection(key);
-
-        if (direction == Vector2{})
-        {
-            continue;
-        }
-
-        if (move(direction, map, entities) || !isAlive())
+        if (tryMove(key, map, entities))
         {
             return;
         }
