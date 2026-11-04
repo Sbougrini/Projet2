@@ -1,6 +1,7 @@
 // Andy Donero
 #include "Warrior.h"
 #include "Map.h"
+#include <cassert>
 
 Warrior::Warrior(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {
@@ -19,8 +20,6 @@ void Warrior::onUpdate(const Map &map, const std::vector<Entity *> &entities)
 
 void Warrior::onCollision(Entity *other)
 {
-    if (other != nullptr)
-    {
-        other->kill();
-    }
+    assert(other != nullptr);
+    other->kill();
 }

@@ -24,9 +24,9 @@ void Mage::onUpdate(const Map &map, const std::vector<Entity *> &entities)
     }
 }
 
-void Mage::onCollision(Entity *other)
+void Mage::onCollision(Entity *)
 {
-    (void)other;
+    // Le Mage n'inflige aucun dégât au contact.
 }
 
 void Mage::castSpell(const std::vector<Entity *> &entities)
