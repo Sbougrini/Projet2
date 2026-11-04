@@ -1,13 +1,15 @@
 // Sami Bougrini | Andy Donero
 #pragma once
+#include "Map.h"
+#include "Utilities.h"
 #include <string>
 #include <vector>
 
-#include "Map.h"
-#include "Utilities.h"
-
 class Entity;
 class Player;
+class Enemy;
+struct EnemySpawn;
+
 class Game
 {
 public:
@@ -20,6 +22,7 @@ private:
     Game() = default;
     ~Game();
 
+    static Enemy *createEnemy(const EnemySpawn &spawn);
     bool loadLevel(int levelIndex, std::string &error);
     void playTurn();
     bool isLevelFinished() const;
@@ -30,8 +33,10 @@ private:
     void renderHUD() const;
     void freeLevel();
 
+    static constexpr int LEVEL_COUNT = 5;
+    static const std::string LEVEL_PATHS[LEVEL_COUNT];
     Map map;
     std::vector<Entity *> entities;
-    int currentLevel = 0;   
+    int currentLevel = 4;
     Player *player = nullptr;
 };
