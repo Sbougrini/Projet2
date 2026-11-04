@@ -1,5 +1,6 @@
 // Sami Bougrini
 #include "Utilities.h"
+#include <cassert>
 
 const Vector2 Utilities::DIRECTION_OFFSETS[4] = {
     {0, -1}, // UP
@@ -14,7 +15,9 @@ Vector2 Utilities::offset(Direction direction)
     {
         return Vector2{};
     }
-    return DIRECTION_OFFSETS[static_cast<int>(direction)];
+    int index = static_cast<int>(direction);
+    assert(index >= 0 && index < DIRECTION_COUNT);
+    return DIRECTION_OFFSETS[index];
 }
 
 Direction Utilities::inputToDirection(int key)

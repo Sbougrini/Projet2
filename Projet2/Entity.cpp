@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Map.h"
 #include "Utilities.h"
+#include <cassert>
 
 Vector2 Entity::getPosition() const
 {
@@ -20,6 +21,7 @@ bool Entity::isAlive() const
 
 void Entity::applyDamage(int damage)
 {
+    assert(damage >= 0);
     health -= damage;
     if (health < 0)
     {
@@ -66,6 +68,7 @@ bool Entity::move(const Vector2 &direction, const Map &map,
 
 bool Entity::handleContact(Entity *other)
 {
+    assert(other != nullptr);
     if (other->isPlayer() == isPlayer())
     {
         return false;

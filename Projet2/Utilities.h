@@ -33,5 +33,6 @@ public:
     static Direction inputToDirection(int key);
 
 private:
-    static const Vector2 DIRECTION_OFFSETS[4];
+    static constexpr int DIRECTION_COUNT = 4;
+    static const Vector2 DIRECTION_OFFSETS[DIRECTION_COUNT];
 };
