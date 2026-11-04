@@ -11,6 +11,7 @@ public:
     virtual ~Entity() = default;
     Vector2 getPosition() const;
     void setPosition(const Vector2 &newPosition);
+    int getHealth() const;
     void applyDamage(int damage);
     bool isAlive() const;
     void kill();
@@ -47,4 +48,9 @@ inline Vector2 Entity::getPosition() const
 inline void Entity::kill()
 {
     health = 0;
+}
+
+inline int Entity::getHealth() const
+{
+    return health;
 }

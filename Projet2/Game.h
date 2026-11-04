@@ -7,6 +7,7 @@
 #include "Utilities.h"
 
 class Entity;
+class Player;
 class Game
 {
 public:
@@ -24,9 +25,13 @@ private:
     bool isLevelFinished() const;
     void removeDeadEnemies();
     void render() const;
+    void renderMap() const;
+    void renderEntities() const;
+    void renderHUD() const;
     void freeLevel();
 
     Map map;
     std::vector<Entity *> entities;
-    int currentLevel = 0;
+    int currentLevel = 0;   
+    Player *player = nullptr;
 };
