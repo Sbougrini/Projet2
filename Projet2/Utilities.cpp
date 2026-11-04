@@ -1,6 +1,7 @@
 // Sami Bougrini
 #include "Utilities.h"
 #include <cassert>
+#include <cstdlib>
 
 const Vector2 Utilities::DIRECTION_OFFSETS[DIRECTION_COUNT] = {
     {0, -1}, // UP
@@ -18,6 +19,11 @@ Vector2 Utilities::offset(Direction direction)
     int index = static_cast<int>(direction);
     assert(index >= 0 && index < DIRECTION_COUNT);
     return DIRECTION_OFFSETS[index];
+}
+
+Direction Utilities::randomDirection()
+{
+    return static_cast<Direction>(std::rand() % DIRECTION_COUNT);
 }
 
 Direction Utilities::inputToDirection(char key)

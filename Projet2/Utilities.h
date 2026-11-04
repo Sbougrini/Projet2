@@ -30,6 +30,7 @@ class Utilities
 public:
     Utilities() = delete;
     static Vector2 offset(Direction direction);
+    static Direction randomDirection();
     static Direction inputToDirection(char key);
 
 private:
