@@ -4,19 +4,9 @@
 #include "Utilities.h"
 #include <cassert>
 
-Vector2 Entity::getPosition() const
-{
-    return position;
-}
-
 void Entity::setPosition(const Vector2 &newPosition)
 {
     position = newPosition;
-}
-
-bool Entity::isAlive() const
-{
-    return health > 0;
 }
 
 void Entity::applyDamage(int damage)

@@ -18,8 +18,3 @@ Vector2 Player::getDirection(int key) const
 {
     return Utilities::offset(Utilities::inputToDirection(key));
 }
-
-bool Player::isPlayer() const
-{
-    return true;
-}

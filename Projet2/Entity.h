@@ -11,8 +11,8 @@ public:
     virtual ~Entity() = default;
     Vector2 getPosition() const;
     void setPosition(const Vector2 &newPosition);
-    bool isAlive() const;
     void applyDamage(int damage);
+    bool isAlive() const;
     bool move(const Vector2 &direction, const Map &map,
               const std::vector<Entity *> &entities);
 
@@ -32,3 +32,13 @@ private:
                          const std::vector<Entity *> &entities) const;
     bool handleContact(Entity *other);
 };
+
+inline bool Entity::isAlive() const
+{
+    return health > 0;
+}
+
+inline Vector2 Entity::getPosition() const
+{
+    return position;
+}

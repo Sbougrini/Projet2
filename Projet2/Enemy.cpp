@@ -9,11 +9,6 @@ void Enemy::onUpdate(const Map &map, const std::vector<Entity *> &entities)
     move(direction, map, entities);
 }
 
-bool Enemy::isPlayer() const
-{
-    return false;
-}
-
 void Enemy::onCollision(Entity *other)
 {
     assert(other != nullptr);

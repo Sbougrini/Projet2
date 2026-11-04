@@ -13,3 +13,8 @@ public:
 
     bool isPlayer() const override;
 };
+
+inline bool Player::isPlayer() const
+{
+    return true;
+}

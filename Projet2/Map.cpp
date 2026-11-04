@@ -2,12 +2,6 @@
 #include "Map.h"
 #include <cassert>
 
-bool Map::isInside(const Vector2 &position) const
-{
-    return position.x >= 0 && position.x < MAP_WIDTH && position.y >= 0 &&
-           position.y < MAP_HEIGHT;
-}
-
 int Map::toIndex(const Vector2 &position) const
 {
     assert(isInside(position));
@@ -16,7 +10,7 @@ int Map::toIndex(const Vector2 &position) const
 
 bool Map::isWalkable(const Vector2 &position) const
 {
-    if(!isInside(position))
+    if (!isInside(position))
     {
         return false;
     }

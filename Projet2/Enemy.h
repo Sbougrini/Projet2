@@ -21,3 +21,8 @@ protected:
     static Vector2 findPlayerPosition(const std::vector<Entity *> &entities);
     static constexpr int DAMAGE = 1;
 };
+
+inline bool Enemy::isPlayer() const
+{
+    return false;
+}

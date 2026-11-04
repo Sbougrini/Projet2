@@ -11,3 +11,8 @@ public:
     char getSymbol() const override;
     void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
 };
+
+inline char ZombieSwimmer::getSymbol() const
+{
+    return SYMBOL;
+}

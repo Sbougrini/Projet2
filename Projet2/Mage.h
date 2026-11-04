@@ -18,3 +18,8 @@ public:
 
     void castSpell(const std::vector<Entity *> &entities);
 };
+
+inline char Mage::getSymbol() const
+{
+    return 'M';
+}

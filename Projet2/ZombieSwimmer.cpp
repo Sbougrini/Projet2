@@ -7,11 +7,6 @@ ZombieSwimmer::ZombieSwimmer()
     canSwim = true;
 }
 
-char ZombieSwimmer::getSymbol() const
-{
-    return SYMBOL;
-}
-
 void ZombieSwimmer::onUpdate(const Map &map, const std::vector<Entity *> &entities)
 {
     Zombie::onUpdate(map, entities);

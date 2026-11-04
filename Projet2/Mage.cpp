@@ -39,11 +39,6 @@ void Mage::onCollision(Entity *other)
     (void)other;
 }
 
-char Mage::getSymbol() const
-{
-    return 'M';
-}
-
 void Mage::castSpell(const std::vector<Entity *> &entities)
 {
     for (Entity *entity : entities)

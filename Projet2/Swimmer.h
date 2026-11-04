@@ -12,3 +12,8 @@ public:
 private:
     int oxygen = MAX_OXYGEN;
 };
+
+inline bool Swimmer::hasOxygen() const
+{
+    return oxygen > 0;
+}

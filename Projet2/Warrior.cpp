@@ -32,8 +32,3 @@ void Warrior::onCollision(Entity *other)
         other->applyDamage(std::numeric_limits<int>::max());
     }
 }
-
-char Warrior::getSymbol() const
-{
-    return 'W';
-}

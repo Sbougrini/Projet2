@@ -3,11 +3,6 @@
 
 #include <cstdlib>
 
-char Zombie::getSymbol() const
-{
-    return SYMBOL;
-}
-
 Vector2 Zombie::getDirection(const Map &, const Vector2 &playerPosition) const
 {
     int dx = playerPosition.x - position.x;

@@ -5,11 +5,6 @@ Swimmer::~Swimmer()
 {
 }
 
-bool Swimmer::hasOxygen() const
-{
-    return oxygen > 0;
-}
-
 void Swimmer::updateOxygen(bool isInWater)
 {
     if (isInWater)

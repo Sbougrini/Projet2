@@ -15,8 +15,3 @@ void WarriorMage::onCollision(Entity *other)
 {
     Warrior::onCollision(other);
 }
-
-char WarriorMage::getSymbol() const
-{
-    return 'B';
-}

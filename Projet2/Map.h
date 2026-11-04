@@ -37,3 +37,9 @@ private:
     CellType cells[MAP_WIDTH * MAP_HEIGHT] = {};
     static const CellInfo CELL_INFOS[CellTypeCount];
 };
+
+inline bool Map::isInside(const Vector2 &position) const
+{
+    return position.x >= 0 && position.x < MAP_WIDTH && position.y >= 0 &&
+           position.y < MAP_HEIGHT;
+}
