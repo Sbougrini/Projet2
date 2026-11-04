@@ -20,5 +20,6 @@ public:
 
 inline char WarriorMage::getSymbol() const
 {
-    return 'B';
+    static constexpr char SYMBOL = 'B';
+    return SYMBOL;
 }

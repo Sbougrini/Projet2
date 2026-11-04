@@ -2,7 +2,8 @@
 #include "WarriorMage.h"
 
 WarriorMage::WarriorMage(const Vector2 &startPosition)
-    : Player(startPosition, Warrior::MAX_HEALTH), Warrior(startPosition), Mage(startPosition)
+    : Player(startPosition, Warrior::MAX_HEALTH), Warrior(startPosition),
+      Mage(startPosition)
 {
 }
 
