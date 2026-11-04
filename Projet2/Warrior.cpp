@@ -2,7 +2,7 @@
 #include "Warrior.h"
 #include "Map.h"
 
-Warrior::Warrior(const Vector2 &startPosition) : Player(startPosition, 3)
+Warrior::Warrior(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {
 }
 

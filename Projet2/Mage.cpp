@@ -3,7 +3,7 @@
 #include "Map.h"
 #include <cstdlib>
 
-Mage::Mage(const Vector2 &startPosition) : Player(startPosition, 1)
+Mage::Mage(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {
 }
 
@@ -12,7 +12,7 @@ void Mage::onUpdate(const Map &map, const std::vector<Entity *> &entities)
     while (isAlive())
     {
         const char key = readPlayerInputs();
-        if (key == ' ')
+        if (key == SPELL_KEY)
         {
             castSpell(entities);
             return;

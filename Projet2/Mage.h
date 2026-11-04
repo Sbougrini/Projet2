@@ -10,6 +10,10 @@ class Map;
 class Mage : public virtual Player
 {
 public:
+    static constexpr char SYMBOL = 'M';
+    static constexpr int MAX_HEALTH = 1;
+    static constexpr char SPELL_KEY = ' ';
+
     Mage(const Vector2 &startPosition);
 
     void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
@@ -21,5 +25,5 @@ public:
 
 inline char Mage::getSymbol() const
 {
-    return 'M';
+    return SYMBOL;
 }

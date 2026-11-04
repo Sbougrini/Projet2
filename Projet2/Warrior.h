@@ -10,6 +10,9 @@ class Map;
 class Warrior : public virtual Player
 {
 public:
+    static constexpr char SYMBOL = 'W';
+    static constexpr int MAX_HEALTH = 3;
+
     Warrior(const Vector2 &startPosition);
 
     void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
@@ -19,5 +22,5 @@ public:
 
 inline char Warrior::getSymbol() const
 {
-    return 'W';
+    return SYMBOL;
 }
