@@ -26,6 +26,9 @@ private:
     bool loadLevel(int levelIndex, std::string &error);
     void playTurn();
     bool isLevelFinished() const;
+    std::string playLevels();
+    void playLevel();
+    static void showMessage(const std::string &message);
     void removeDeadEnemies();
     void render() const;
     void renderMap() const;

@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "ZombieSwimmer.h"
-/*#include "Warrior.h"*/ //Test
+/*#include "Warrior.h"*/ // Test
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
@@ -20,7 +20,8 @@ const std::string Game::LEVEL_PATHS[LEVEL_COUNT] = {
 Enemy *Game::createEnemy(const EnemySpawn &spawn)
 {
     Enemy *enemy = nullptr;
-    switch (spawn.type) {
+    switch (spawn.type)
+    {
     case EnemyType::ZOMBIE:
         enemy = new Zombie();
         break;
@@ -67,7 +68,8 @@ void Game::renderEntities() const
 
 void Game::renderHUD() const
 {
-    mvprintw(MAP_HEIGHT + 1, 0, "PV : %d", player->getHealth());
+    mvprintw(MAP_HEIGHT + 1, 0, "PV : %d    Niveau : %d / %d", player->getHealth(),
+             currentLevel + 1, LEVEL_COUNT);
 }
 
 void Game::render() const
@@ -86,23 +88,8 @@ void Game::run()
     cbreak();
     curs_set(0);
     std::srand(std::time(nullptr));
-
-    // Pour tester :
-    //player = new Warrior(Vector2{0, 0});
-    //std::string error;
-    //if (!loadLevel(currentLevel, error))
-    //{
-    //    printw("%s", error.c_str());
-    //}
-    //else
-    //{
-    //    while (player->isAlive())
-    //    {
-    //        render();
-    //        playTurn();
-    //    }
-    //}
-    getch();
+    /* player = new Warrior(Vector2{0, 0});*/ // Test
+    showMessage(playLevels());
     endwin();
 }
 
@@ -170,4 +157,45 @@ void Game::removeDeadEnemies()
         }
     }
     entities = std::move(survivors);
+}
+
+bool Game::isLevelFinished() const
+{
+    return player->isAlive() && map.isExit(player->getPosition());
+}
+
+void Game::playLevel()
+{
+    while (player->isAlive() && !isLevelFinished())
+    {
+        render();
+        playTurn();
+    }
+}
+
+std::string Game::playLevels()
+{
+    std::string error;
+    for (currentLevel = 0; currentLevel < LEVEL_COUNT; ++currentLevel)
+    {
+        if (!loadLevel(currentLevel, error))
+        {
+            return error;
+        }
+        playLevel();
+        if (!player->isAlive())
+        {
+            return "Game Over ! ";
+        }
+    }
+    return "VICTOIRE ! ";
+}
+
+void Game::showMessage(const std::string &message)
+{
+    clear();
+    mvprintw(0, 0, "%s", message.c_str());
+    mvprintw(2, 0, "Appuie sur une touche pour quitter");
+    refresh();
+    getch();
 }
