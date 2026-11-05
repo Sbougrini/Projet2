@@ -1,4 +1,4 @@
-// Sami Bougrini
+// Sami Bougrini | Andy Donero
 #include "Game.h"
 #include "Entity.h"
 #include "HeadlessZombie.h"
@@ -6,7 +6,9 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "ZombieSwimmer.h"
-/*#include "Warrior.h"*/ // Test
+#include "Warrior.h"
+#include "Mage.h"
+#include "WarriorMage.h"
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
@@ -88,7 +90,7 @@ void Game::run()
     cbreak();
     curs_set(0);
     std::srand(std::time(nullptr));
-    /* player = new Warrior(Vector2{0, 0});*/ // Test
+    choosePlayer();
     showMessage(playLevels());
     endwin();
 }
@@ -198,4 +200,32 @@ void Game::showMessage(const std::string &message)
     mvprintw(2, 0, "Appuie sur une touche pour quitter");
     refresh();
     getch();
+}
+
+void Game::choosePlayer()
+{
+    clear();
+    mvprintw(0, 0, "Choisis un personnage :");
+    mvprintw(2, 0, "1 : Warrior");
+    mvprintw(3, 0, "2 : Mage");
+    mvprintw(4, 0, "3 : WarriorMage");
+    refresh();
+    while (player == nullptr)
+    {
+        player = createPlayer(static_cast<char>(getch()));
+    }
+}
+
+Player *Game::createPlayer(char key)
+{
+    switch (key)
+    {case '1':
+        return new Warrior(Vector2{});
+    case '2':
+        return new Mage(Vector2{});
+    case '3':
+        return new WarriorMage(Vector2{});
+    default:
+        return nullptr;
+    }
 }

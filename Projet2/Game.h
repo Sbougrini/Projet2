@@ -23,6 +23,8 @@ private:
     ~Game();
 
     static Enemy *createEnemy(const EnemySpawn &spawn);
+    void choosePlayer();
+    static Player *createPlayer(char key);
     bool loadLevel(int levelIndex, std::string &error);
     void playTurn();
     bool isLevelFinished() const;
