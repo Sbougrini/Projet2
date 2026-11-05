@@ -6,11 +6,12 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "ZombieSwimmer.h"
-//#include "Warrior.h" Test
+/*#include "Warrior.h"*/ //Test
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
 #include <curses.h>
+#include <utility>
 
 const std::string Game::LEVEL_PATHS[LEVEL_COUNT] = {
     "maps/Tuto.txt", "maps/level01.txt", "maps/level02.txt", "maps/level03.txt",
@@ -95,7 +96,11 @@ void Game::run()
     //}
     //else
     //{
-    //    render();
+    //    while (player->isAlive())
+    //    {
+    //        render();
+    //        playTurn();
+    //    }
     //}
     getch();
     endwin();
@@ -136,4 +141,33 @@ void Game::freeLevel()
         }
     }
     entities.clear();
+}
+
+void Game::playTurn()
+{
+    for (Entity *entity : entities)
+    {
+        if (entity->isAlive())
+        {
+            entity->onUpdate(map, entities);
+        }
+    }
+    removeDeadEnemies();
+}
+
+void Game::removeDeadEnemies()
+{
+    std::vector<Entity *> survivors;
+    for (Entity *entity : entities)
+    {
+        if (entity == player || entity->isAlive())
+        {
+            survivors.push_back(entity);
+        }
+        else
+        {
+            delete entity;
+        }
+    }
+    entities = std::move(survivors);
 }
