@@ -94,7 +94,7 @@ bool LevelParser::checkSymbols(const Lines &lines, std::string &error)
     }
     if (countSymbol(lines, EXIT_SYMBOL) < 1)
     {
-        error = "Le niveau doit avoir une seule sortie E";
+        error = "Le niveau doit avoir au moins une sortie E";
         return false;
     }
     return true;

@@ -42,6 +42,6 @@ private:
     static const std::string LEVEL_PATHS[LEVEL_COUNT];
     Map map;
     std::vector<Entity *> entities;
-    int currentLevel = 4;
+    int currentLevel = 0;
     Player *player = nullptr;
 };

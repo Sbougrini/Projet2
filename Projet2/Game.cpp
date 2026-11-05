@@ -31,7 +31,7 @@ Enemy *Game::createEnemy(const EnemySpawn &spawn)
         enemy = new HeadlessZombie();
         break;
     case EnemyType::ZOMBIE_SWIMMER:
-        enemy = new ZombieSwimmer;
+        enemy = new ZombieSwimmer();
         break;
     }
     assert(enemy != nullptr);
@@ -192,7 +192,7 @@ std::string Game::playLevels()
         playLevel();
         if (player->hasQuit())
         {
-            return "Vous avez quitter la partie...";
+            return "Vous avez quitte la partie...";
         }
         if (!player->isAlive())
         {
