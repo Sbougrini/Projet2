@@ -19,6 +19,7 @@ public:
     void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
     void onCollision(Entity *other) override;
     char getSymbol() const override;
+    bool canCastSpell() const override;
 
     void castSpell(const std::vector<Entity *> &entities);
 };
@@ -26,4 +27,9 @@ public:
 inline char Mage::getSymbol() const
 {
     return SYMBOL;
+}
+
+inline bool Mage::canCastSpell() const
+{
+    return true;
 }

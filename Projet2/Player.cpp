@@ -21,6 +21,11 @@ Vector2 Player::getDirection(char key) const
 
 bool Player::tryMove(char key, const Map &map, const std::vector<Entity *> &entities)
 {
+    if (key == QUIT_KEY)
+    {
+        quit = true;
+        return true;
+    }
     Vector2 direction = getDirection(key);
     if (direction == Vector2{})
     {

@@ -3,12 +3,12 @@
 #include "Entity.h"
 #include "HeadlessZombie.h"
 #include "LevelParser.h"
+#include "Mage.h"
 #include "Player.h"
+#include "Warrior.h"
+#include "WarriorMage.h"
 #include "Zombie.h"
 #include "ZombieSwimmer.h"
-#include "Warrior.h"
-#include "Mage.h"
-#include "WarriorMage.h"
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
@@ -72,6 +72,11 @@ void Game::renderHUD() const
 {
     mvprintw(MAP_HEIGHT + 1, 0, "PV : %d    Niveau : %d / %d", player->getHealth(),
              currentLevel + 1, LEVEL_COUNT);
+    mvprintw(MAP_HEIGHT + 2, 0, "zqsd : bouger   Retour : quitter");
+    if (player->canCastSpell())
+    {
+        mvprintw(MAP_HEIGHT + 3, 0, "Espace : Sort");
+    }
 }
 
 void Game::render() const
@@ -168,7 +173,7 @@ bool Game::isLevelFinished() const
 
 void Game::playLevel()
 {
-    while (player->isAlive() && !isLevelFinished())
+    while (player->isAlive() && !player->hasQuit() && !isLevelFinished())
     {
         render();
         playTurn();
@@ -185,6 +190,10 @@ std::string Game::playLevels()
             return error;
         }
         playLevel();
+        if (player->hasQuit())
+        {
+            return "Vous avez quitter la partie...";
+        }
         if (!player->isAlive())
         {
             return "Game Over ! ";
@@ -219,7 +228,8 @@ void Game::choosePlayer()
 Player *Game::createPlayer(char key)
 {
     switch (key)
-    {case '1':
+    {
+    case '1':
         return new Warrior(Vector2{});
     case '2':
         return new Mage(Vector2{});
