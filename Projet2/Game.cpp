@@ -81,22 +81,26 @@ void Game::renderEntities() const
 
 void Game::renderHUD() const
 {
-    mvprintw(MAP_HEIGHT + 1, 0, "PV : %d    Niveau : %d / %d", player->getHealth(),
-             currentLevel + 1, LEVEL_COUNT);
-    mvprintw(MAP_HEIGHT + 2, 0, "zqsd : bouger   Retour : quitter");
+    werase(hudWindow);
+    box(hudWindow, 0, 0);
+    mvwprintw(hudWindow, 1, 2, "PV : %d", player->getHealth());
+    mvwprintw(hudWindow, 2, 2, "Niveau : %d / %d", currentLevel + 1, LEVEL_COUNT);
+    mvwprintw(hudWindow, 4, 2, "z, q, s, d : Deplacement");
+    mvwprintw(hudWindow, 5, 2, "Retour : quitter");
     if (player->canCastSpell())
     {
-        mvprintw(MAP_HEIGHT + 3, 0, "Espace : Sort");
+        mvwprintw(hudWindow, 6, 2, "Espace : Sort");
     }
+    wrefresh(hudWindow);
 }
 
 void Game::render() const
 {
-    clear();
+    erase();
     renderMap();
     renderEntities();
-    renderHUD();
     refresh();
+    renderHUD();
 }
 
 void Game::run()
@@ -107,10 +111,12 @@ void Game::run()
     curs_set(0);
     initColors();
     std::srand(std::time(nullptr));
+    hudWindow = newwin(MAP_HEIGHT, HUD_WIDTH, 0, MAP_WIDTH + 2);
     while (state != EXIT)
     {
         updateState();
     }
+    delwin(hudWindow);
     endwin();
 }
 
@@ -150,7 +156,6 @@ void Game::updateLoadLevel()
     {
         endGame(error);
     }
-
 }
 
 void Game::freeLevel()
@@ -244,22 +249,24 @@ void Game::updateGameEnd()
 
 void Game::showMessage(const std::string &message)
 {
-    clear();
-    mvprintw(0, 0, "%s", message.c_str());
-    mvprintw(2, 0, "Appuie sur une touche pour quitter");
-    refresh();
-    getch();
+    WINDOW *window = openMessageWindow();
+    mvwprintw(window, 1, 2, "%s", message.c_str());
+    mvwprintw(window, 3, 2, "Appuie sur une touche pour quitter");
+    wrefresh(window);
+    wgetch(window);
+    delwin(window);
 }
 
 void Game::updateChoosePlayer()
 {
-    clear();
-    mvprintw(0, 0, "Choisis un personnage :");
-    mvprintw(2, 0, "1 : Warrior");
-    mvprintw(3, 0, "2 : Mage");
-    mvprintw(4, 0, "3 : WarriorMage");
-    refresh();
-    player = createPlayer(static_cast<char>(getch()));
+    WINDOW *window = openMessageWindow();
+    mvwprintw(window, 1, 2, "Choisis un personnage :");
+    mvwprintw(window, 3, 2, "1 : Warrior");
+    mvwprintw(window, 4, 2, "2 : Mage");
+    mvwprintw(window, 5, 2, "3 : WarriorMage");
+    wrefresh(window);
+    player = createPlayer(static_cast<char>(wgetch(window)));
+    delwin(window);
     if (player != nullptr)
     {
         changeState(LOAD_LEVEL);
@@ -306,4 +313,15 @@ void Game::initColors()
     init_pair(EXIT_COLOR, COLOR_GREEN, COLOR_BLACK);
     init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
     init_pair(ENEMY_COLOR, COLOR_RED, COLOR_BLACK);
+}
+
+WINDOW *Game::openMessageWindow()
+{
+    clear();
+    refresh();
+    int startY = (LINES - MESSAGE_HEIGHT) / 2;
+    int startX = (COLS - MESSAGE_WIDTH) / 2;
+    WINDOW *window = newwin(MESSAGE_HEIGHT, MESSAGE_WIDTH, startY, startX);
+    box(window, 0, 0);
+    return window;
 }

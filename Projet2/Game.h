@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "StateMachine.h"
 #include "Utilities.h"
+#include <curses.h>
 #include <string>
 #include <vector>
 
@@ -56,8 +57,12 @@ private:
     void renderHUD() const;
     void freeLevel();
     static void initColors();
+    static WINDOW *openMessageWindow();
 
     static constexpr int LEVEL_COUNT = 5;
+    static constexpr int HUD_WIDTH = 30;
+    static constexpr int MESSAGE_WIDTH = 60;
+    static constexpr int MESSAGE_HEIGHT = 10;
     static const std::string LEVEL_PATHS[LEVEL_COUNT];
     static const StateFunction STATE_FUNCTIONS[STATE_COUNT];
     State state = CHOOSE_PLAYER;
@@ -66,4 +71,5 @@ private:
     std::vector<Entity *> entities;
     int currentLevel = 0;
     Player *player = nullptr;
+    WINDOW *hudWindow = nullptr;
 };
