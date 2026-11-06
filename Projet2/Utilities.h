@@ -25,6 +25,16 @@ enum class Direction
     NONE
 };
 
+enum ColorPair
+{
+    DEFAULT_COLOR = 0,
+    WATER_COLOR,
+    MOUNTAIN_COLOR,
+    EXIT_COLOR,
+    PLAYER_COLOR,
+    ENEMY_COLOR
+};
+
 class Utilities
 {
 public:

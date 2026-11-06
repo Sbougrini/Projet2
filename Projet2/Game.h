@@ -55,6 +55,7 @@ private:
     void renderEntities() const;
     void renderHUD() const;
     void freeLevel();
+    static void initColors();
 
     static constexpr int LEVEL_COUNT = 5;
     static const std::string LEVEL_PATHS[LEVEL_COUNT];

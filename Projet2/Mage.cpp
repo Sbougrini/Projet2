@@ -1,4 +1,4 @@
-// Andy Donero | Sami Bougrini (state machine)
+// Andy Donero
 #include "Mage.h"
 #include "Map.h"
 #include <cstdlib>

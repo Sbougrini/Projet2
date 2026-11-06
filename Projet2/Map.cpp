@@ -2,6 +2,13 @@
 #include "Map.h"
 #include <cassert>
 
+const CellInfo Map::CELL_INFOS[CellTypeCount] = {
+    {'.', true, false, DEFAULT_COLOR},   
+    {'~', false, true, WATER_COLOR},     
+    {'A', false, false, MOUNTAIN_COLOR}, 
+    {'E', true, false, EXIT_COLOR}       
+};
+
 int Map::toIndex(const Vector2 &position) const
 {
     assert(isInside(position));
@@ -44,6 +51,15 @@ char Map::getSymbol(const Vector2 &position) const
     return CELL_INFOS[cells[toIndex(position)]].symbol;
 }
 
+ColorPair Map::getColor(const Vector2 &position) const
+{
+    if (!isInside(position))
+    {
+        return DEFAULT_COLOR;
+    }
+    return CELL_INFOS[cells[toIndex(position)]].color;
+}
+
 bool Map::symbolToCellType(char symbol, CellType &type)
 {
     for (int i = 0; i < CellTypeCount; ++i)
@@ -65,10 +81,3 @@ void Map::setCellType(const Vector2 &position, CellType type)
     }
     cells[toIndex(position)] = type;
 }
-
-const CellInfo Map::CELL_INFOS[CellTypeCount] = {
-    {'.', true, false},  // Ground
-    {'~', false, true},  // Water
-    {'A', false, false}, // Mountain
-    {'E', true, false}   // Exit
-};

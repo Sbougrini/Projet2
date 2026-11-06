@@ -19,6 +19,7 @@ struct CellInfo
     char symbol = ' ';
     bool isWalkable = false;
     bool isWater = false;
+    ColorPair color = DEFAULT_COLOR;
 };
 
 class Map
@@ -30,6 +31,7 @@ public:
     bool isWater(const Vector2 &position) const;
     bool isExit(const Vector2 &position) const;
     char getSymbol(const Vector2 &position) const;
+    ColorPair getColor(const Vector2 &position) const;
     void setCellType(const Vector2 &position, CellType type);
 
 private:

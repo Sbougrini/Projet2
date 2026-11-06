@@ -55,7 +55,11 @@ void Game::renderMap() const
     {
         for (int x = 0; x < MAP_WIDTH; ++x)
         {
-            mvaddch(y, x, map.getSymbol(Vector2{x, y}));
+            Vector2 position{x, y};
+            int color = map.getColor(position);
+            attron(COLOR_PAIR(color));
+            mvaddch(y, x, map.getSymbol(position));
+            attroff(COLOR_PAIR(color));
         }
     }
 }
@@ -67,7 +71,10 @@ void Game::renderEntities() const
         if (entity->isAlive())
         {
             Vector2 position = entity->getPosition();
+            int color = entity->isPlayer() ? PLAYER_COLOR : ENEMY_COLOR;
+            attron(COLOR_PAIR(color) | A_BOLD);
             mvaddch(position.y, position.x, entity->getSymbol());
+            attroff(COLOR_PAIR(color) | A_BOLD);
         }
     }
 }
@@ -98,6 +105,7 @@ void Game::run()
     noecho();
     cbreak();
     curs_set(0);
+    initColors();
     std::srand(std::time(nullptr));
     while (state != EXIT)
     {
@@ -284,4 +292,18 @@ void Game::updateState()
     StateFunction function = STATE_FUNCTIONS[state];
     assert(function != nullptr);
     (this->*function)();
+}
+
+void Game::initColors()
+{
+    if (!has_colors())
+    {
+        return;
+    }
+    start_color();
+    init_pair(WATER_COLOR, COLOR_BLUE, COLOR_BLACK);
+    init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(EXIT_COLOR, COLOR_GREEN, COLOR_BLACK);
+    init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
+    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_BLACK);
 }

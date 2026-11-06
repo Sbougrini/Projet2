@@ -1,4 +1,4 @@
-// Andy Donero | Sami Bougrini (state machine)
+// Andy Donero
 #pragma once
 
 #include "Player.h"
