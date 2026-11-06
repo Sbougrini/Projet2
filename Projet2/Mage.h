@@ -1,4 +1,4 @@
-// Andy Donero
+// Andy Donero | Sami Bougrini (state machine)
 #pragma once
 
 #include "Player.h"
@@ -22,6 +22,11 @@ public:
     bool canCastSpell() const override;
 
     void castSpell(const std::vector<Entity *> &entities);
+
+private:
+    static constexpr char SPELL_SYMBOL = '*';
+    static constexpr int SPELL_DISPLAY_MS = 300;
+    void showSpellArea() const;
 };
 
 inline char Mage::getSymbol() const

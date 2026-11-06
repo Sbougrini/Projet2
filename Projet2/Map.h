@@ -25,7 +25,7 @@ class Map
 {
 public:
     static bool symbolToCellType(char symbol, CellType &type);
-    bool isInside(const Vector2 &position) const;
+    static bool isInside(const Vector2 &position);
     bool isWalkable(const Vector2 &position) const;
     bool isWater(const Vector2 &position) const;
     bool isExit(const Vector2 &position) const;
@@ -38,7 +38,7 @@ private:
     static const CellInfo CELL_INFOS[CellTypeCount];
 };
 
-inline bool Map::isInside(const Vector2 &position) const
+inline bool Map::isInside(const Vector2 &position)
 {
     return position.x >= 0 && position.x < MAP_WIDTH && position.y >= 0 &&
            position.y < MAP_HEIGHT;

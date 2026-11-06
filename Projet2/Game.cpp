@@ -19,6 +19,10 @@ const std::string Game::LEVEL_PATHS[LEVEL_COUNT] = {
     "maps/Tuto.txt", "maps/level01.txt", "maps/level02.txt", "maps/level03.txt",
     "maps/levelFinal.txt"};
 
+const Game::StateFunction Game::STATE_FUNCTIONS[STATE_COUNT] = {
+    &Game::updateChoosePlayer, &Game::updateLoadLevel, &Game::updatePlaying,
+    &Game::updateGameEnd, nullptr};
+
 Enemy *Game::createEnemy(const EnemySpawn &spawn)
 {
     Enemy *enemy = nullptr;
@@ -95,8 +99,10 @@ void Game::run()
     cbreak();
     curs_set(0);
     std::srand(std::time(nullptr));
-    choosePlayer();
-    showMessage(playLevels());
+    while (state != EXIT)
+    {
+        updateState();
+    }
     endwin();
 }
 
@@ -123,6 +129,20 @@ bool Game::loadLevel(int levelIndex, std::string &error)
         entities.push_back(createEnemy(spawn));
     }
     return true;
+}
+
+void Game::updateLoadLevel()
+{
+    std::string error;
+    if (loadLevel(currentLevel, error))
+    {
+        changeState(PLAYING);
+    }
+    else
+    {
+        endGame(error);
+    }
+
 }
 
 void Game::freeLevel()
@@ -171,35 +191,47 @@ bool Game::isLevelFinished() const
     return player->isAlive() && map.isExit(player->getPosition());
 }
 
-void Game::playLevel()
+void Game::updatePlaying()
 {
-    while (player->isAlive() && !player->hasQuit() && !isLevelFinished())
+    render();
+    playTurn();
+    if (player->hasQuit())
     {
-        render();
-        playTurn();
+        endGame("Vous avez quitte la partie...");
+    }
+    else if (!player->isAlive())
+    {
+        endGame("Game Over !");
+    }
+    else if (isLevelFinished())
+    {
+        goToNextLevel();
     }
 }
 
-std::string Game::playLevels()
+void Game::goToNextLevel()
 {
-    std::string error;
-    for (currentLevel = 0; currentLevel < LEVEL_COUNT; ++currentLevel)
+    ++currentLevel;
+    if (currentLevel == LEVEL_COUNT)
     {
-        if (!loadLevel(currentLevel, error))
-        {
-            return error;
-        }
-        playLevel();
-        if (player->hasQuit())
-        {
-            return "Vous avez quitte la partie...";
-        }
-        if (!player->isAlive())
-        {
-            return "Game Over ! ";
-        }
+        endGame("VICTOIRE !");
     }
-    return "VICTOIRE ! ";
+    else
+    {
+        changeState(LOAD_LEVEL);
+    }
+}
+
+void Game::endGame(const std::string &message)
+{
+    endMessage = message;
+    changeState(GAME_END);
+}
+
+void Game::updateGameEnd()
+{
+    showMessage(endMessage);
+    changeState(EXIT);
 }
 
 void Game::showMessage(const std::string &message)
@@ -211,7 +243,7 @@ void Game::showMessage(const std::string &message)
     getch();
 }
 
-void Game::choosePlayer()
+void Game::updateChoosePlayer()
 {
     clear();
     mvprintw(0, 0, "Choisis un personnage :");
@@ -219,9 +251,10 @@ void Game::choosePlayer()
     mvprintw(3, 0, "2 : Mage");
     mvprintw(4, 0, "3 : WarriorMage");
     refresh();
-    while (player == nullptr)
+    player = createPlayer(static_cast<char>(getch()));
+    if (player != nullptr)
     {
-        player = createPlayer(static_cast<char>(getch()));
+        changeState(LOAD_LEVEL);
     }
 }
 
@@ -238,4 +271,17 @@ Player *Game::createPlayer(char key)
     default:
         return nullptr;
     }
+}
+
+void Game::changeState(int newState)
+{
+    assert(newState >= 0 && newState < STATE_COUNT);
+    state = static_cast<State>(newState);
+}
+
+void Game::updateState()
+{
+    StateFunction function = STATE_FUNCTIONS[state];
+    assert(function != nullptr);
+    (this->*function)();
 }

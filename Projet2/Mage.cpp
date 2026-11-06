@@ -1,7 +1,8 @@
-// Andy Donero
+// Andy Donero | Sami Bougrini (state machine)
 #include "Mage.h"
 #include "Map.h"
 #include <cstdlib>
+#include <curses.h>
 
 Mage::Mage(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {
@@ -31,6 +32,7 @@ void Mage::onCollision(Entity *)
 
 void Mage::castSpell(const std::vector<Entity *> &entities)
 {
+    showSpellArea();
     for (Entity *entity : entities)
     {
         if (entity == nullptr || !entity->isAlive() || entity->isPlayer())
@@ -47,4 +49,23 @@ void Mage::castSpell(const std::vector<Entity *> &entities)
             entity->kill();
         }
     }
+}
+
+void Mage::showSpellArea() const
+{
+    attron(A_REVERSE);
+    for (int dy = -1; dy <= 1; ++dy)
+    {
+        for (int dx = -1; dx <= 1; ++dx)
+        {
+            Vector2 cell = position + Vector2{dx, dy};
+            if ((dx != 0 || dy != 0) && Map::isInside(cell))
+            {
+                mvaddch(cell.y, cell.x, SPELL_SYMBOL);
+            }
+        }
+    }
+    attroff(A_REVERSE);
+    refresh();
+    napms(SPELL_DISPLAY_MS);
 }
