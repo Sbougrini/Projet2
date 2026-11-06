@@ -28,6 +28,7 @@ enum class Direction
 enum ColorPair
 {
     DEFAULT_COLOR = 0,
+    GROUND_COLOR,
     WATER_COLOR,
     MOUNTAIN_COLOR,
     EXIT_COLOR,

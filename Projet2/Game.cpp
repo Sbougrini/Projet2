@@ -308,11 +308,12 @@ void Game::initColors()
         return;
     }
     start_color();
-    init_pair(WATER_COLOR, COLOR_BLUE, COLOR_BLACK);
-    init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(EXIT_COLOR, COLOR_GREEN, COLOR_BLACK);
+    init_pair(GROUND_COLOR, COLOR_WHITE, COLOR_GREEN);
+    init_pair(WATER_COLOR, COLOR_BLUE, COLOR_BLUE);
+    init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(EXIT_COLOR, COLOR_MAGENTA, COLOR_MAGENTA);
     init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_BLACK);
+    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_RED);
 }
 
 WINDOW *Game::openMessageWindow()

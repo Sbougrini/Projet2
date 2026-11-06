@@ -3,7 +3,7 @@
 #include <cassert>
 
 const CellInfo Map::CELL_INFOS[CellTypeCount] = {
-    {'.', true, false, DEFAULT_COLOR},   
+    {'.', true, false, GROUND_COLOR},   
     {'~', false, true, WATER_COLOR},     
     {'A', false, false, MOUNTAIN_COLOR}, 
     {'E', true, false, EXIT_COLOR}       
