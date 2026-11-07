@@ -111,10 +111,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\pdcurses\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)external\pdcurses\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -129,17 +132,51 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\pdcurses\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)external\pdcurses\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pdcurses.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="HeadlessZombie.cpp" />
+    <ClCompile Include="Mage.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="LevelParser.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projet2.cpp" />
+    <ClCompile Include="Swimmer.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Warrior.cpp" />
+    <ClCompile Include="WarriorMage.cpp" />
+    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="ZombieSwimmer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Mage.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="HeadlessZombie.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="LevelParser.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="Swimmer.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Warrior.h" />
+    <ClInclude Include="WarriorMage.h" />
+    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="ZombieSwimmer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
