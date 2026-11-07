@@ -1,11 +1,26 @@
 // Sami Bougrini
 #include "LevelParser.h"
-#include "HeadlessZombie.h"
-#include "Zombie.h"
-#include "ZombieSwimmer.h"
+
 #include <cassert>
 #include <fstream>
 #include <utility>
+
+#include "HeadlessZombie.h"
+#include "Zombie.h"
+#include "ZombieSwimmer.h"
+
+bool LevelParser::parse(const std::string &path, LevelData &data, std::string &error)
+{
+    Lines lines;
+    if (!readLines(path, lines, error) || !checkLineLengths(lines, error) ||
+        !checkSymbols(lines, error))
+    {
+        return false;
+    }
+    data = LevelData{};
+    fillLevelData(lines, data);
+    return true;
+}
 
 bool LevelParser::readLines(const std::string &path, Lines &lines, std::string &error)
 {
@@ -42,6 +57,42 @@ bool LevelParser::checkLineLengths(const Lines &lines, std::string &error)
     return true;
 }
 
+bool LevelParser::checkSymbols(const Lines &lines, std::string &error)
+{
+    if (!checkUnknownSymbols(lines, error))
+    {
+        return false;
+    }
+    if (countSymbol(lines, PLAYER_SYMBOL) != 1)
+    {
+        error = "Le niveau doit avoir un seul depart H";
+        return false;
+    }
+    if (countSymbol(lines, EXIT_SYMBOL) < 1)
+    {
+        error = "Le niveau doit avoir au moins une sortie E";
+        return false;
+    }
+    return true;
+}
+
+bool LevelParser::checkUnknownSymbols(const Lines &lines, std::string &error)
+{
+    CellType type = GROUND;
+    for (const std::string &line : lines)
+    {
+        for (char symbol : line)
+        {
+            if (!isEntitySymbol(symbol) && !Map::symbolToCellType(symbol, type))
+            {
+                error = std::string("Symbole inconnu : ") + symbol;
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 bool LevelParser::isEntitySymbol(char symbol)
 {
     return symbol == PLAYER_SYMBOL || symbol == Zombie::SYMBOL ||
@@ -64,56 +115,6 @@ int LevelParser::countSymbol(const Lines &lines, char symbol)
     return count;
 }
 
-bool LevelParser::checkUnknownSymbols(const Lines &lines, std::string &error)
-{
-    CellType type = Ground;
-    for (const std::string &line : lines)
-    {
-        for (char symbol : line)
-        {
-            if (!isEntitySymbol(symbol) && !Map::symbolToCellType(symbol, type))
-            {
-                error = std::string("Symbole inconnu : ") + symbol;
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool LevelParser::checkSymbols(const Lines &lines, std::string &error)
-{
-    if (!checkUnknownSymbols(lines, error))
-    {
-        return false;
-    }
-    if (countSymbol(lines, PLAYER_SYMBOL) != 1)
-    {
-        error = "Le niveau doit avoir un seul depart H";
-        return false;
-    }
-    if (countSymbol(lines, EXIT_SYMBOL) < 1)
-    {
-        error = "Le niveau doit avoir au moins une sortie E";
-        return false;
-    }
-    return true;
-}
-
-EnemyType LevelParser::symbolToEnemyType(char symbol)
-{
-    switch (symbol)
-    {
-    case HeadlessZombie::SYMBOL:
-        return EnemyType::HEADLESS_ZOMBIE;
-    case ZombieSwimmer::SYMBOL:
-        return EnemyType::ZOMBIE_SWIMMER;
-    default:
-        assert(symbol == Zombie::SYMBOL);
-        return EnemyType::ZOMBIE;
-    }
-}
-
 void LevelParser::fillLevelData(const Lines &lines, LevelData &data)
 {
     for (int y = 0; y < MAP_HEIGHT; ++y)
@@ -122,7 +123,7 @@ void LevelParser::fillLevelData(const Lines &lines, LevelData &data)
         {
             Vector2 position{x, y};
             char symbol = lines[y][x];
-            CellType type = Ground;
+            CellType type = GROUND;
             if (symbol == PLAYER_SYMBOL)
             {
                 data.playerStart = position;
@@ -140,15 +141,16 @@ void LevelParser::fillLevelData(const Lines &lines, LevelData &data)
     }
 }
 
-bool LevelParser::parse(const std::string &path, LevelData &data, std::string &error)
+EnemyType LevelParser::symbolToEnemyType(char symbol)
 {
-    Lines lines;
-    if (!readLines(path, lines, error) || !checkLineLengths(lines, error) ||
-        !checkSymbols(lines, error))
+    switch (symbol)
     {
-        return false;
+    case HeadlessZombie::SYMBOL:
+        return EnemyType::HEADLESS_ZOMBIE;
+    case ZombieSwimmer::SYMBOL:
+        return EnemyType::ZOMBIE_SWIMMER;
+    default:
+        assert(symbol == Zombie::SYMBOL);
+        return EnemyType::ZOMBIE;
     }
-    data = LevelData{};
-    fillLevelData(lines, data);
-    return true;
 }

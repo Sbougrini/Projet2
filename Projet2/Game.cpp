@@ -1,5 +1,13 @@
 // Sami Bougrini | Andy Donero
 #include "Game.h"
+
+#include <cassert>
+#include <cstdlib>
+#include <ctime>
+#include <utility>
+
+#include <curses.h>
+
 #include "Entity.h"
 #include "HeadlessZombie.h"
 #include "LevelParser.h"
@@ -9,11 +17,6 @@
 #include "WarriorMage.h"
 #include "Zombie.h"
 #include "ZombieSwimmer.h"
-#include <cassert>
-#include <cstdlib>
-#include <ctime>
-#include <curses.h>
-#include <utility>
 
 const std::string Game::LEVEL_PATHS[LEVEL_COUNT] = {
     "maps/Tuto.txt", "maps/level01.txt", "maps/level02.txt", "maps/level03.txt",
@@ -22,6 +25,137 @@ const std::string Game::LEVEL_PATHS[LEVEL_COUNT] = {
 const Game::StateFunction Game::STATE_FUNCTIONS[STATE_COUNT] = {
     &Game::updateChoosePlayer, &Game::updateLoadLevel, &Game::updatePlaying,
     &Game::updateGameEnd, nullptr};
+
+Game &Game::getInstance()
+{
+    static Game instance;
+    return instance;
+}
+
+Game::~Game()
+{
+    freeLevel();
+    delete player;
+}
+
+void Game::run()
+{
+    initscr();
+    noecho();
+    cbreak();
+    curs_set(0);
+    initColors();
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    hudWindow = newwin(MAP_HEIGHT, HUD_WIDTH, 0, MAP_WIDTH + 2);
+    while (state != EXIT)
+    {
+        updateState();
+    }
+    delwin(hudWindow);
+    endwin();
+}
+
+void Game::changeState(int newState)
+{
+    assert(newState >= 0 && newState < STATE_COUNT);
+    state = static_cast<State>(newState);
+}
+
+void Game::updateState()
+{
+    StateFunction function = STATE_FUNCTIONS[state];
+    assert(function != nullptr);
+    (this->*function)();
+}
+
+// États de la partie
+void Game::updateChoosePlayer()
+{
+    WINDOW *window = openMessageWindow();
+    mvwprintw(window, 1, 2, "Choisis un personnage :");
+    mvwprintw(window, 3, 2, "1 : Warrior");
+    mvwprintw(window, 4, 2, "2 : Mage");
+    mvwprintw(window, 5, 2, "3 : WarriorMage");
+    wrefresh(window);
+    player = createPlayer(static_cast<char>(wgetch(window)));
+    delwin(window);
+    if (player != nullptr)
+    {
+        changeState(LOAD_LEVEL);
+    }
+}
+
+void Game::updateLoadLevel()
+{
+    std::string error;
+    if (loadLevel(currentLevel, error))
+    {
+        changeState(PLAYING);
+    }
+    else
+    {
+        endGame(error);
+    }
+}
+
+void Game::updatePlaying()
+{
+    render();
+    playTurn();
+    if (player->hasQuit())
+    {
+        endGame("Vous avez quitte la partie...");
+    }
+    else if (!player->isAlive())
+    {
+        endGame("Game Over !");
+    }
+    else if (isLevelFinished())
+    {
+        goToNextLevel();
+    }
+}
+
+void Game::updateGameEnd()
+{
+    showMessage(endMessage);
+    changeState(EXIT);
+}
+
+void Game::goToNextLevel()
+{
+    ++currentLevel;
+    if (currentLevel == LEVEL_COUNT)
+    {
+        endGame("VICTOIRE !");
+    }
+    else
+    {
+        changeState(LOAD_LEVEL);
+    }
+}
+
+void Game::endGame(const std::string &message)
+{
+    endMessage = message;
+    changeState(GAME_END);
+}
+
+// Création des entités et chargement des niveaux
+Player *Game::createPlayer(char key)
+{
+    switch (key)
+    {
+    case '1':
+        return new Warrior(Vector2{});
+    case '2':
+        return new Mage(Vector2{});
+    case '3':
+        return new WarriorMage(Vector2{});
+    default:
+        return nullptr;
+    }
+}
 
 Enemy *Game::createEnemy(const EnemySpawn &spawn)
 {
@@ -43,10 +177,95 @@ Enemy *Game::createEnemy(const EnemySpawn &spawn)
     return enemy;
 }
 
-Game &Game::getInstance()
+bool Game::loadLevel(int levelIndex, std::string &error)
 {
-    static Game instance;
-    return instance;
+    assert(levelIndex >= 0 && levelIndex < LEVEL_COUNT);
+    LevelData data;
+    if (!LevelParser::parse(LEVEL_PATHS[levelIndex], data, error))
+    {
+        return false;
+    }
+    freeLevel();
+    map = data.map;
+    player->setPosition(data.playerStart);
+    entities.push_back(player);
+    for (const EnemySpawn &spawn : data.enemies)
+    {
+        entities.push_back(createEnemy(spawn));
+    }
+    return true;
+}
+
+void Game::freeLevel()
+{
+    for (Entity *entity : entities)
+    {
+        if (entity != player)
+        {
+            delete entity;
+        }
+    }
+    entities.clear();
+}
+
+// Tour de jeu
+void Game::playTurn()
+{
+    for (Entity *entity : entities)
+    {
+        if (entity->isAlive())
+        {
+            entity->onUpdate(map, entities);
+        }
+    }
+    removeDeadEnemies();
+}
+
+void Game::removeDeadEnemies()
+{
+    std::vector<Entity *> survivors;
+    for (Entity *entity : entities)
+    {
+        if (entity == player || entity->isAlive())
+        {
+            survivors.push_back(entity);
+        }
+        else
+        {
+            delete entity;
+        }
+    }
+    entities = std::move(survivors);
+}
+
+bool Game::isLevelFinished() const
+{
+    return player->isAlive() && map.isExit(player->getPosition());
+}
+
+// Affichage
+void Game::initColors()
+{
+    if (!has_colors())
+    {
+        return;
+    }
+    start_color();
+    init_pair(GROUND_COLOR, COLOR_WHITE, COLOR_GREEN);
+    init_pair(WATER_COLOR, COLOR_BLUE, COLOR_BLUE);
+    init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(EXIT_COLOR, COLOR_MAGENTA, COLOR_MAGENTA);
+    init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
+    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_RED);
+}
+
+void Game::render() const
+{
+    erase();
+    renderMap();
+    renderEntities();
+    refresh();
+    renderHUD();
 }
 
 void Game::renderMap() const
@@ -94,157 +313,15 @@ void Game::renderHUD() const
     wrefresh(hudWindow);
 }
 
-void Game::render() const
+WINDOW *Game::openMessageWindow()
 {
-    erase();
-    renderMap();
-    renderEntities();
+    clear();
     refresh();
-    renderHUD();
-}
-
-void Game::run()
-{
-    initscr();
-    noecho();
-    cbreak();
-    curs_set(0);
-    initColors();
-    std::srand(std::time(nullptr));
-    hudWindow = newwin(MAP_HEIGHT, HUD_WIDTH, 0, MAP_WIDTH + 2);
-    while (state != EXIT)
-    {
-        updateState();
-    }
-    delwin(hudWindow);
-    endwin();
-}
-
-Game::~Game()
-{
-    freeLevel();
-    delete player;
-}
-
-bool Game::loadLevel(int levelIndex, std::string &error)
-{
-    assert(levelIndex >= 0 && levelIndex < LEVEL_COUNT);
-    LevelData data;
-    if (!LevelParser::parse(LEVEL_PATHS[levelIndex], data, error))
-    {
-        return false;
-    }
-    freeLevel();
-    map = data.map;
-    player->setPosition(data.playerStart);
-    entities.push_back(player);
-    for (const EnemySpawn &spawn : data.enemies)
-    {
-        entities.push_back(createEnemy(spawn));
-    }
-    return true;
-}
-
-void Game::updateLoadLevel()
-{
-    std::string error;
-    if (loadLevel(currentLevel, error))
-    {
-        changeState(PLAYING);
-    }
-    else
-    {
-        endGame(error);
-    }
-}
-
-void Game::freeLevel()
-{
-    for (Entity *entity : entities)
-    {
-        if (entity != player)
-        {
-            delete entity;
-        }
-    }
-    entities.clear();
-}
-
-void Game::playTurn()
-{
-    for (Entity *entity : entities)
-    {
-        if (entity->isAlive())
-        {
-            entity->onUpdate(map, entities);
-        }
-    }
-    removeDeadEnemies();
-}
-
-void Game::removeDeadEnemies()
-{
-    std::vector<Entity *> survivors;
-    for (Entity *entity : entities)
-    {
-        if (entity == player || entity->isAlive())
-        {
-            survivors.push_back(entity);
-        }
-        else
-        {
-            delete entity;
-        }
-    }
-    entities = std::move(survivors);
-}
-
-bool Game::isLevelFinished() const
-{
-    return player->isAlive() && map.isExit(player->getPosition());
-}
-
-void Game::updatePlaying()
-{
-    render();
-    playTurn();
-    if (player->hasQuit())
-    {
-        endGame("Vous avez quitte la partie...");
-    }
-    else if (!player->isAlive())
-    {
-        endGame("Game Over !");
-    }
-    else if (isLevelFinished())
-    {
-        goToNextLevel();
-    }
-}
-
-void Game::goToNextLevel()
-{
-    ++currentLevel;
-    if (currentLevel == LEVEL_COUNT)
-    {
-        endGame("VICTOIRE !");
-    }
-    else
-    {
-        changeState(LOAD_LEVEL);
-    }
-}
-
-void Game::endGame(const std::string &message)
-{
-    endMessage = message;
-    changeState(GAME_END);
-}
-
-void Game::updateGameEnd()
-{
-    showMessage(endMessage);
-    changeState(EXIT);
+    int startY = (LINES - MESSAGE_HEIGHT) / 2;
+    int startX = (COLS - MESSAGE_WIDTH) / 2;
+    WINDOW *window = newwin(MESSAGE_HEIGHT, MESSAGE_WIDTH, startY, startX);
+    box(window, 0, 0);
+    return window;
 }
 
 void Game::showMessage(const std::string &message)
@@ -255,74 +332,4 @@ void Game::showMessage(const std::string &message)
     wrefresh(window);
     wgetch(window);
     delwin(window);
-}
-
-void Game::updateChoosePlayer()
-{
-    WINDOW *window = openMessageWindow();
-    mvwprintw(window, 1, 2, "Choisis un personnage :");
-    mvwprintw(window, 3, 2, "1 : Warrior");
-    mvwprintw(window, 4, 2, "2 : Mage");
-    mvwprintw(window, 5, 2, "3 : WarriorMage");
-    wrefresh(window);
-    player = createPlayer(static_cast<char>(wgetch(window)));
-    delwin(window);
-    if (player != nullptr)
-    {
-        changeState(LOAD_LEVEL);
-    }
-}
-
-Player *Game::createPlayer(char key)
-{
-    switch (key)
-    {
-    case '1':
-        return new Warrior(Vector2{});
-    case '2':
-        return new Mage(Vector2{});
-    case '3':
-        return new WarriorMage(Vector2{});
-    default:
-        return nullptr;
-    }
-}
-
-void Game::changeState(int newState)
-{
-    assert(newState >= 0 && newState < STATE_COUNT);
-    state = static_cast<State>(newState);
-}
-
-void Game::updateState()
-{
-    StateFunction function = STATE_FUNCTIONS[state];
-    assert(function != nullptr);
-    (this->*function)();
-}
-
-void Game::initColors()
-{
-    if (!has_colors())
-    {
-        return;
-    }
-    start_color();
-    init_pair(GROUND_COLOR, COLOR_WHITE, COLOR_GREEN);
-    init_pair(WATER_COLOR, COLOR_BLUE, COLOR_BLUE);
-    init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_YELLOW);
-    init_pair(EXIT_COLOR, COLOR_MAGENTA, COLOR_MAGENTA);
-    init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_RED);
-}
-
-WINDOW *Game::openMessageWindow()
-{
-    clear();
-    refresh();
-    int startY = (LINES - MESSAGE_HEIGHT) / 2;
-    int startX = (COLS - MESSAGE_WIDTH) / 2;
-    WINDOW *window = newwin(MESSAGE_HEIGHT, MESSAGE_WIDTH, startY, startX);
-    box(window, 0, 0);
-    return window;
 }

@@ -1,10 +1,10 @@
 // Andy Donero
 #pragma once
 
+#include <vector>
+
 #include "Mage.h"
 #include "Warrior.h"
-
-#include <vector>
 
 class Map;
 
@@ -16,6 +16,7 @@ public:
     void onUpdate(const Map &map, const std::vector<Entity *> &entities) override;
     void onCollision(Entity *other) override;
     char getSymbol() const override;
+    bool canCastSpell() const override;
 };
 
 inline char WarriorMage::getSymbol() const

@@ -1,7 +1,9 @@
 // Andy Donero
 #include "Player.h"
-#include "Utilities.h"
+
 #include <curses.h>
+
+#include "Utilities.h"
 
 Player::Player(const Vector2 &startPosition, int startingHealth)
 {

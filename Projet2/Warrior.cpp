@@ -1,7 +1,9 @@
 // Andy Donero
 #include "Warrior.h"
-#include "Map.h"
+
 #include <cassert>
+
+#include "Map.h"
 
 Warrior::Warrior(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {

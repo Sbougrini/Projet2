@@ -1,8 +1,11 @@
 // Andy Donero
 #include "Mage.h"
-#include "Map.h"
+
 #include <cstdlib>
+
 #include <curses.h>
+
+#include "Map.h"
 
 Mage::Mage(const Vector2 &startPosition) : Player(startPosition, MAX_HEALTH)
 {

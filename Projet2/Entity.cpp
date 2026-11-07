@@ -1,8 +1,10 @@
 // Sami Bougrini
 #include "Entity.h"
+
+#include <cassert>
+
 #include "Map.h"
 #include "Utilities.h"
-#include <cassert>
 
 void Entity::setPosition(const Vector2 &newPosition)
 {
@@ -17,24 +19,6 @@ void Entity::applyDamage(int damage)
     {
         health = 0;
     }
-}
-
-bool Entity::canEnter(const Map &map, const Vector2 &target) const
-{
-    return map.isWalkable(target) || (canSwim && map.isWater(target));
-}
-
-Entity *Entity::findEntityAt(const Vector2 &target,
-                             const std::vector<Entity *> &entities) const
-{
-    for (Entity *entity : entities)
-    {
-        if (entity != this && entity->isAlive() && entity->getPosition() == target)
-        {
-            return entity;
-        }
-    }
-    return nullptr;
 }
 
 bool Entity::move(const Vector2 &direction, const Map &map,
@@ -54,6 +38,24 @@ bool Entity::move(const Vector2 &direction, const Map &map,
 
     position = target;
     return true;
+}
+
+bool Entity::canEnter(const Map &map, const Vector2 &target) const
+{
+    return map.isWalkable(target) || (canSwim && map.isWater(target));
+}
+
+Entity *Entity::findEntityAt(const Vector2 &target,
+                             const std::vector<Entity *> &entities) const
+{
+    for (Entity *entity : entities)
+    {
+        if (entity != this && entity->isAlive() && entity->getPosition() == target)
+        {
+            return entity;
+        }
+    }
+    return nullptr;
 }
 
 bool Entity::handleContact(Entity *other)

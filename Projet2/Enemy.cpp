@@ -1,5 +1,6 @@
 // Sami Bougrini
 #include "Enemy.h"
+
 #include <cassert>
 
 void Enemy::onUpdate(const Map &map, const std::vector<Entity *> &entities)

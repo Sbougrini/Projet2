@@ -1,7 +1,9 @@
 // Sami Bougrini | Andy Donero
 #pragma once
-#include "Utilities.h"
+
 #include <vector>
+
+#include "Utilities.h"
 
 class Map;
 

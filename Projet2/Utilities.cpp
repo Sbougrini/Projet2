@@ -1,5 +1,6 @@
 // Sami Bougrini
 #include "Utilities.h"
+
 #include <cassert>
 #include <cstdlib>
 

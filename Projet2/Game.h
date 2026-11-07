@@ -1,14 +1,17 @@
 // Sami Bougrini | Andy Donero
 #pragma once
-#include "Map.h"
-#include "StateMachine.h"
-#include "Utilities.h"
-#include <curses.h>
+
 #include <string>
 #include <vector>
 
+#include <curses.h>
+
+#include "Map.h"
+#include "StateMachine.h"
+#include "Utilities.h"
+
 class Entity;
-class Player;
+class Player;   
 class Enemy;
 struct EnemySpawn;
 
@@ -37,6 +40,7 @@ private:
     Game() = default;
     ~Game();
 
+    // États de la partie
     void updateChoosePlayer();
     void updateLoadLevel();
     void updatePlaying();
@@ -44,20 +48,25 @@ private:
     void goToNextLevel();
     void endGame(const std::string &message);
 
-    static Enemy *createEnemy(const EnemySpawn &spawn);
+    // Création des entités et chargement des niveaux
     static Player *createPlayer(char key);
+    static Enemy *createEnemy(const EnemySpawn &spawn);
     bool loadLevel(int levelIndex, std::string &error);
+    void freeLevel();
+
+    // Tour de jeu
     void playTurn();
-    bool isLevelFinished() const;
-    static void showMessage(const std::string &message);
     void removeDeadEnemies();
+    bool isLevelFinished() const;
+
+    // Affichage
+    static void initColors();
     void render() const;
     void renderMap() const;
     void renderEntities() const;
     void renderHUD() const;
-    void freeLevel();
-    static void initColors();
     static WINDOW *openMessageWindow();
+    static void showMessage(const std::string &message);
 
     static constexpr int LEVEL_COUNT = 5;
     static constexpr int HUD_WIDTH = 30;
@@ -65,11 +74,12 @@ private:
     static constexpr int MESSAGE_HEIGHT = 10;
     static const std::string LEVEL_PATHS[LEVEL_COUNT];
     static const StateFunction STATE_FUNCTIONS[STATE_COUNT];
+
     State state = CHOOSE_PLAYER;
     std::string endMessage;
-    Map map;
-    std::vector<Entity *> entities;
     int currentLevel = 0;
+    Map map;
     Player *player = nullptr;
+    std::vector<Entity *> entities;
     WINDOW *hudWindow = nullptr;
 };

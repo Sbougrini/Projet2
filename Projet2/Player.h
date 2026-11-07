@@ -1,8 +1,9 @@
 // Andy Donero
 #pragma once
 
-#include "Entity.h"
 #include <vector>
+
+#include "Entity.h"
 
 class Map;
 

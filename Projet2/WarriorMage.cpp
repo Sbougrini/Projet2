@@ -16,3 +16,8 @@ void WarriorMage::onCollision(Entity *other)
 {
     Warrior::onCollision(other);
 }
+
+bool WarriorMage::canCastSpell() const
+{
+    return Mage::canCastSpell();
+}

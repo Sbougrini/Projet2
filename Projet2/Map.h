@@ -7,11 +7,11 @@ constexpr int MAP_HEIGHT = 10;
 
 enum CellType
 {
-    Ground = 0,
-    Water,
-    Mountain,
-    Exit,
-    CellTypeCount
+    GROUND = 0,
+    WATER,
+    MOUNTAIN,
+    EXIT,
+    CELL_TYPE_COUNT
 };
 
 struct CellInfo
@@ -37,7 +37,7 @@ public:
 private:
     int toIndex(const Vector2 &position) const;
     CellType cells[MAP_WIDTH * MAP_HEIGHT] = {};
-    static const CellInfo CELL_INFOS[CellTypeCount];
+    static const CellInfo CELL_INFOS[CELL_TYPE_COUNT];
 };
 
 inline bool Map::isInside(const Vector2 &position)
