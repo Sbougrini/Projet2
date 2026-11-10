@@ -69,6 +69,13 @@ private:
     static void showMessage(const std::string &message);
 
     static constexpr int LEVEL_COUNT = 5;
+    static constexpr char WARRIOR_KEY = '1';
+    static constexpr char MAGE_KEY = '2';
+    static constexpr char WARRIOR_MAGE_KEY = '3';
+    static constexpr char WARRIOR_AZERTY_KEY = '&';
+    static constexpr char MAGE_AZERTY_KEY_OEM = '\x82';
+    static constexpr char MAGE_AZERTY_KEY_ANSI = '\xE9';
+    static constexpr char WARRIOR_MAGE_AZERTY_KEY = '"';
     static constexpr int HUD_WIDTH = 30;
     static constexpr int MESSAGE_WIDTH = 60;
     static constexpr int MESSAGE_HEIGHT = 10;

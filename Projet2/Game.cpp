@@ -146,11 +146,15 @@ Player *Game::createPlayer(char key)
 {
     switch (key)
     {
-    case '1':
+    case WARRIOR_KEY:
+    case WARRIOR_AZERTY_KEY:
         return new Warrior(Vector2{});
-    case '2':
+    case MAGE_KEY:
+    case MAGE_AZERTY_KEY_OEM:
+    case MAGE_AZERTY_KEY_ANSI:
         return new Mage(Vector2{});
-    case '3':
+    case WARRIOR_MAGE_KEY:
+    case WARRIOR_MAGE_AZERTY_KEY:
         return new WarriorMage(Vector2{});
     default:
         return nullptr;
@@ -217,6 +221,10 @@ void Game::playTurn()
         {
             entity->onUpdate(map, entities);
         }
+        if (player->hasQuit() || !player->isAlive() || isLevelFinished())
+        {
+            break;
+        }
     }
     removeDeadEnemies();
 }
@@ -256,7 +264,7 @@ void Game::initColors()
     init_pair(MOUNTAIN_COLOR, COLOR_YELLOW, COLOR_YELLOW);
     init_pair(EXIT_COLOR, COLOR_MAGENTA, COLOR_MAGENTA);
     init_pair(PLAYER_COLOR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(ENEMY_COLOR, COLOR_RED, COLOR_RED);
+    init_pair(ENEMY_COLOR, COLOR_WHITE, COLOR_RED);
 }
 
 void Game::render() const
